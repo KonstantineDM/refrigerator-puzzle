@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,51 +13,35 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            background-color: hsl(265.7, 5.3%, 73.9%);
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
             margin: 10px;
             cursor: pointer;
         }
+
         img {
-            transition: transform 0.5s ease; /* Smooth transition */
+            transition: transform 0.5s ease;
+        }
+
+        .button-start {
+            position: absolute;
+            bottom: 100rem;
+            padding: 2rem 10rem;
+            font-size: 3rem;
         }
     </style>
 </head>
-<body>
-    <button onclick="createPuzzle()">START</button>
 
-    <!-- <h1>Click the Button to Change Its Color</h1>
-    <button id="colorButton">Click Me!</button> -->
-    <!-- <table id="fridge-table">
-        <tr>
-            <td>
-                <img id="1" src="valve.PNG">
-                <br><br>
-                <button onclick="rotateValve90Degrees()">Rotate valve</button>
-            </td>
-            <td>
-                <img id="2" src="valve.PNG">
-                <br><br>
-                <button onclick="rotateValve90Degrees()">Rotate valve</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img id="3" src="valve.PNG">
-                <br><br>
-                <button onclick="rotateValve90Degrees()">Rotate valve</button>
-            </td>
-            <td>
-                <img id="4" src="valve.PNG">
-                <br><br>
-                <button onclick="rotateValve90Degrees()">Rotate valve</button>
-            </td>
-        </tr>
-    </table> -->
-    <!-- <img src="valve.PNG"> -->
+<body>
+    <button class="button-start" onclick="startGame()">
+        START
+    </button>
 
     <script src="./script.js"></script>
 </body>
+
 </html>
