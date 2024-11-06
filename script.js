@@ -1,7 +1,3 @@
-// TODO: переделать логику на работу со значениями 1 - вертикальное положение и 0 - горизонтальное положение
-// TODO: добавить фактическую смену значения с 1 на 0 и наоборот при повороте вентиля
-// TODO: новую логику использовать для определения состояния доски - победа или нет
-
 function startGame() {
   const fridgeTableElement = document.getElementById("fridge-table");
   const isReset = !!fridgeTableElement;
@@ -30,6 +26,7 @@ function createPuzzle() {
 
   const fridgeTable = document.createElement("table");
   fridgeTable.id = "fridge-table";
+  fridgeTable.classList.add("fridge");
   document.body.appendChild(fridgeTable);
 
   const rows = 4;
@@ -70,27 +67,7 @@ function createValve(valveId) {
   return valveImageElement;
 }
 
-// function rotateValve90Degrees(valveElementId) {
-//   let defaultValveAngle = 0;
-
-//   const valveElement = document.getElementById(valveElementId);
-
-//   const currentAngle = valveElement.style.transform
-//     ? Number(valveElement.style.transform.split("(")[1].split("deg)")[0])
-//     : `rotate(${defaultValveAngle}deg)`;
-
-//   const newAngle = currentAngle === 90 ? 0 : 90;
-
-//   document.getElementById(
-//     valveElementId
-//   ).style.transform = `rotate(${newAngle}deg)`;
-
-//   updateValvesPositions(valveElementId);
-// }
-
 function rotateValve90Degrees(valveElementId) {
-  console.log('valveElementId: ', valveElementId);
-
   const valveElement = document.getElementById(valveElementId);
 
   const valveIndex = valveIndexMap[valveElementId];
@@ -98,48 +75,25 @@ function rotateValve90Degrees(valveElementId) {
     defaultValvePositions[valveIndex[0]][valveIndex[1]];
   const defaultValveAngle = defaultValvePosition ? 90 : 0;
 
-  console.log("defaultValvePosition", defaultValvePosition);
-  console.log("defaultValveAngle", defaultValveAngle);
-
   const currentAngle = valveElement.style.transform
     ? Number(valveElement.style.transform.split("(")[1].split("deg)")[0])
     : defaultValveAngle;
 
-  console.log("currentAngle", currentAngle);
-
   const newAngle = currentAngle === 90 ? 0 : 90;
+  const newValvePosition = defaultValvePosition ? 0 : 1;
+  currentValvePositions[valveIndex[0]][valveIndex[1]] = newValvePosition;
 
   valveElement.style.transform = `rotate(${newAngle}deg)`;
 
   updateValvesPositions(valveElementId);
 }
 
-// function rotateOneValve90Degrees(valveElementId) {
-//   let defaultValveAngle = 0;
-
-//   const valveElement = document.getElementById(valveElementId);
-
-//   const currentAngle = valveElement.style.transform
-//     ? Number(valveElement.style.transform.split("(")[1].split("deg)")[0])
-//     : `rotate(${defaultValveAngle}deg)`;
-
-//   const newAngle = currentAngle === 90 ? 0 : 90;
-
-//   document.getElementById(
-//     valveElementId
-//   ).style.transform = `rotate(${newAngle}deg)`;
-// }
-
 function rotateOneValve90Degrees(valveElementId) {
-  // console.log('valveElementId: ', valveElementId);
-  
   const valveElement = document.getElementById(valveElementId);
 
   const valveIndex = valveIndexMap[valveElementId];
   const currentValvePosition =
     currentValvePositions[valveIndex[0]][valveIndex[1]];
-
-  // console.log("currentValvePosition", currentValvePosition);
   
   const currentAngle = currentValvePosition ? 90 : 0;
 
@@ -147,9 +101,9 @@ function rotateOneValve90Degrees(valveElementId) {
     ? Number(valveElement.style.transform.split("(")[1].split("deg)")[0])
     : currentAngle;
 
-  // console.log("newAngle: ", newAngle);
-
   const newNewAngle = newAngle === 90 ? 0 : 90;
+  const newValvePosition = currentValvePosition ? 0 : 1;
+  currentValvePositions[valveIndex[0]][valveIndex[1]] = newValvePosition;
   
   valveElement.style.transform = `rotate(${newNewAngle}deg)`;
 }
@@ -167,7 +121,9 @@ function updateValvesPositions(valveElementId) {
 function checkVictoryConditions() {
   const flatArray = currentValvePositions.flat();
 
-  console.log("flatArray: ", flatArray);  
+  if (!flatArray.includes(0)) {
+    console.log('A WINNER IS YOU!');    
+  }
 };
 
 const valveIdsDependencyMap = {
@@ -199,13 +155,13 @@ const valveIdsDependencyMap = {
 */
 
 const defaultValvePositions = [
-  [1, 0, 1, 0],
-  [0, 1, 1, 0],
-  [1, 0, 0, 1],
-  [0, 1, 1, 1],
+  [1, 1, 1, 0],
+  [1, 1, 1, 0],
+  [1, 1, 1, 0],
+  [0, 0, 0, 0],
 ];
 
-const currentValvePositions = [...defaultValvePositions];
+const currentValvePositions = structuredClone(defaultValvePositions);
 
 const valveIndexMap = {
     0: [0, 0],
